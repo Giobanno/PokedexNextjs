@@ -1,10 +1,9 @@
 import React from 'react';
-import Component from '../components/HelloWorld';
+import Component from '../components/Card';
 
 const Detail = () => {
   return (
     <div>
-      <Component />
     </div>
   )
 }
