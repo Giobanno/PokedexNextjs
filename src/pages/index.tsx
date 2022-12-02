@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Card from '../components/Card';
 
 const Home = () => {
@@ -25,32 +24,49 @@ const Home = () => {
       fetchPokeList();
   }, []);
 
-    // Get pokemon details based off the pagination request
-    useEffect(() => {
-      const fetchPokeData = async () => {
-        let data: any[] = [];
-        for (let i = 0; i < pokemonList?.results.length; i++) {
-          const pokemon = await getPokemons(pokemonList.results[i].url);
-          data.push(pokemon);
-        }
-        setPokemonData(data);
-      };
-  
-      fetchPokeData();
-    }, [pokemonList]);
+  // Pagination
+  const paginateList = async (direction: any) => {
+    switch(direction) {
+      case 'previous':
+        const pokemonPrevious = await getPokemons(pokemonList.previous);
+        setPokemonList(pokemonPrevious);
+        break;
+      case 'next':
+        const pokemonNext = await getPokemons(pokemonList.next);
+        setPokemonList(pokemonNext);
+        break;
+      default:
+        return;
+    }
+  }
 
-    console.log(pokemonList);
-    console.log(pokemonData);
+  // Get pokemon details based off the pagination request
+  useEffect(() => {
+    const fetchPokeData = async () => {
+      let data: any[] = [];
+      for (let i = 0; i < pokemonList?.results.length; i++) {
+        const pokemon = await getPokemons(pokemonList.results[i].url);
+        data.push(pokemon);
+      }
+      setPokemonData(data);
+    };
 
-  return (
-    <div className="container mx-auto">
-        <div>Pokédex</div>
-        <div className="grid grid-cols-3 gap-4">
+    fetchPokeData();
+  }, [pokemonList]);
+
+  console.log(pokemonList);
+  console.log(pokemonData);
+
+  if (pokemonList && pokemonData) return (
+    <div className="container mx-auto max-w-xl">
+      <div>Pokédex</div>
+      <div className="grid grid-cols-3 gap-4">
         {pokemonData && pokemonData.map((pokemon: any, i: number) => {
-              return <Card pokemon={pokemon} key={i} />;
-            })}
-        {/* <Link href="/detail">Go to Detail</Link> */}
+          return <Card pokemon={pokemon} key={i} />;
+        })}
       </div>
+      <button disabled={!pokemonList.previous} onClick={() => paginateList('previous')}>Terug</button>
+      <button disabled={!pokemonList.next} onClick={() => paginateList('next')}>Volgende</button>
     </div>
   )
 }
