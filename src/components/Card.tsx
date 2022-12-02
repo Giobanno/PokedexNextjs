@@ -3,14 +3,16 @@ import Image from 'next/image';
 
 const Card = ({ pokemon }) => {
   return (
-    <div className="text-center">
+    <div className="flex flex-col justify-center items-center bg-slate-800">
       <Image
         src={pokemon.sprites.back_default}
         alt={pokemon.name}
         width={75}
         height={75}
       />
-      {pokemon.name}
+      <div className="text-center">
+        {pokemon.name}
+      </div>
     </div>
   )
 }
