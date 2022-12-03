@@ -1,40 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../components/Card';
+import { PokemonList, Pokemon } from '../interfaces/typing';
 
 const Home = () => {
-  const [pokemonList, setPokemonList] = useState<any>();
-  const [pokemonData, setPokemonData] = useState<any>();
-  const [errorMsg, setErrorMsg] = useState<any>();
+  const [pokemonList, setPokemonList] = useState<PokemonList>();
+  const [pokemonData, setPokemonData] = useState<Pokemon[]>();
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   // Get all pokemons and change endpoint offset param for pagination
-  const getPokemons = async (url = "", limit = 15) => {
+  const getPokemons = async (url: string = "", limit: number = 15) => {
     let uri = url === "" ? `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0` : url;
     return await fetch(uri).then(response => {
         return response.json();
-    }).catch((error) => {
+    }).catch(() => {
         setErrorMsg('Geen resultaten');
         return null;
     });
   }
 
+  // Set pokemon list using getPokemons
   useEffect(() => {
       const fetchPokeList = async () => {
-          let pagination: any = await getPokemons();
-          setPokemonList(pagination);
+          const pokemonList: PokemonList = await getPokemons();
+          setPokemonList(pokemonList);
       };
 
       fetchPokeList();
   }, []);
 
   // Pagination
-  const paginateList = async (direction: any) => {
+  const paginateList = async (direction) => {
     switch(direction) {
       case 'previous':
-        const pokemonPrevious = await getPokemons(pokemonList.previous);
+        const pokemonPrevious: PokemonList = await getPokemons(pokemonList.previous);
         setPokemonList(pokemonPrevious);
         break;
       case 'next':
-        const pokemonNext = await getPokemons(pokemonList.next);
+        const pokemonNext: PokemonList = await getPokemons(pokemonList.next);
         setPokemonList(pokemonNext);
         break;
       default:
@@ -45,7 +47,7 @@ const Home = () => {
   // Get pokemon details based off the pagination request
   useEffect(() => {
     const fetchPokeData = async () => {
-      let data: any[] = [];
+      const data: Pokemon[] = [];
       if (!pokemonList || !pokemonList.results) return;
       for (let i = 0; i < pokemonList?.results.length; i++) {
         const pokemon = await getPokemons(pokemonList.results[i].url);
@@ -58,17 +60,17 @@ const Home = () => {
   }, [pokemonList]);
 
   // Search specific pokemons
-  const searchPokemon = async (input: any) => {
+  const searchPokemon = async (input) => {
     input.preventDefault();
     const pokemonName = JSON.stringify(input.target.pokemon.value).toLowerCase().replaceAll('"', '');
 
     if (!pokemonName) return;
-    const getPokemon = await getPokemons(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const getPokemon: Pokemon = await getPokemons(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
     setPokemonData([getPokemon]);
   }
 
   if (pokemonList && pokemonData) return (
-    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow">
+    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow mt-10">
       <div className="text-lg font-bold text-black mb-5">Pokédex</div>
       <form className="mb-5" onSubmit={searchPokemon}>
           <input className="rounded p-1 text-white pl-2" type="text" name="pokemon" placeholder="Zoek een pokémon" required/>
@@ -76,7 +78,7 @@ const Home = () => {
       </form>
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-4">
         { !errorMsg && pokemonData ? 
-           pokemonData.map((pokemon: any, i: number) => {
+           pokemonData.map((pokemon: Pokemon, i: number) => {
             return <Card pokemon={pokemon} key={i} />;
           }) : 
           <div className="text-black"> {errorMsg} </div>
