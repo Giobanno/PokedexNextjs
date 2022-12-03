@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Pokemon } from '../interfaces/typing';
 
-const Card = ({ pokemon }) => {
-
-  
+const Card = (props: { pokemon: Pokemon }) => {
+  const { pokemon } = props;
 
   return (
     <div className="hover:scale-105">
