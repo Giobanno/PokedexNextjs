@@ -70,11 +70,11 @@ const Home = () => {
   }
 
   if (pokemonList && pokemonData) return (
-    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow mt-10">
+    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow md:mt-10">
       <div className="text-lg font-bold text-black mb-5">Pokédex</div>
-      <form className="mb-5" onSubmit={searchPokemon}>
-          <input className="rounded p-1 text-white pl-2" type="text" name="pokemon" placeholder="Zoek een pokémon" required/>
-          <button className="font-bold border p-1 ml-1 hover:bg-slate-200 rounded disabled:opacity-50 text-black" type="submit">Zoek</button>
+      <form className="mb-5 flex" onSubmit={searchPokemon}>
+          <input className="custom-input appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight" type="text" name="pokemon" placeholder="Zoek een pokémon" required/>
+          <button className="font-bold border p-1 ml-1 hover:bg-slate-600 rounded disabled:opacity-50 text-white bg-black px-3" type="submit">Zoek</button>
       </form>
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-4">
         { !errorMsg && pokemonData ? 

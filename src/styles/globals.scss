@@ -30,3 +30,11 @@ a {
     background: #e0f2fe;
   }
 }
+
+.custom-input {
+  background: #ededed;
+  
+  &::placeholder {
+    color: black;
+  }
+}
