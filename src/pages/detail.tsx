@@ -67,7 +67,7 @@ const Detail = () => {
       </div> 
       <div className="mb-3">
         <div className="text-md font-bold">Moves: </div>
-        <div>{moves}</div>
+        <div>{moves}</div> 
       </div> 
       <Link 
       href="/" className="text-lg font-bold border p-2 mr-3 hover:bg-slate-200 rounded disabled:opacity-50 ">Terug</Link>
