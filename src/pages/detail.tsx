@@ -45,7 +45,7 @@ const Detail = () => {
   }).join(', ');
 
  return (
-    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow text-black mt-10">
+    <div className="container mx-auto max-w-xl p-5 bg-white rounded shadow text-black md:mt-10">
       <Image 
         src={pokemon.sprites.other?.['official-artwork'].front_default}
         alt={pokemon.name}
