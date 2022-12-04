@@ -18,7 +18,7 @@ const Card = (props: { pokemon: Pokemon }) => {
             width={75}
             height={75}
           />
-          <div className="text-center">
+          <div className="text-center text-white">
             {pokemon.name} (#{pokemon.id})
           </div>
         </div>
